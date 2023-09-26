@@ -1,4 +1,6 @@
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.ensemble import GradientBoostingRegressor
 
 basic_randForest = RandomForestRegressor(
     n_estimators=100, 
@@ -19,3 +21,16 @@ basic_randForest = RandomForestRegressor(
     ccp_alpha=0.0,
     max_samples=None
 ) 
+
+best_svr = SVR(
+    C=10, 
+    gamma=0.1, 
+    kernel='linear'
+)
+
+best_GBR = GradientBoostingRegressor(
+    max_features='sqrt', 
+    n_estimators=100,
+    max_depth=3,
+    subsample=0.7999999999999999
+)
