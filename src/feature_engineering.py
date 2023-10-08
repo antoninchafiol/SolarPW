@@ -82,14 +82,3 @@ def sensor_for_module_temp(df):
 # WIP
 
 # --------------
-from data_prep import *
-test_ds = load_sensor("dataset/Plant_1_Weather_Sensor_Data.csv", save=False)[0]
-df, df_pca = sens_for_irradiation(test_ds)
-import seaborn as sns
-import matplotlib.pyplot as plt
-sns.scatterplot(data=df, x='time_id', y='relationshipWgoal',hue='vClustering')
-plt.show()
-sns.scatterplot(data=df, x='time_id', y='relationshipWgoal',hue='hClustering')
-plt.show()
-print(df)
-print(df_pca)
