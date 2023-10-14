@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV
 
 import numpy as np
 
@@ -37,11 +37,11 @@ def plain_testing(x_train, x_dev, y_train, y_dev, model):
 def model_testing_SVR(x_train, x_dev, y_train, y_dev):
     model = SVR()
     param_dist = {
-        'kernel': ['linear','rbf', 'poly'],
-        'C': np.arange(1,100, 10),
-        'gamma': np.arange(1,10,0.1),
+        'kernel': ['linear','rbf'],
+        'C': np.arange(1,21,5),
+        'gamma': np.arange(0.1, 1, 0.2),
     }
-    tuning = RandomizedSearchCV(model, param_dist, n_iter=50 , n_jobs=-1, random_state=42)
+    tuning = GridSearchCV(model, param_dist, n_jobs=-1, cv=2, verbose=2)
     tuning.fit(x_train, y_train)
     print(tuning.best_params_)
     preds = tuning.best_estimator_.predict(x_dev)
@@ -55,13 +55,12 @@ def model_testing_SVR(x_train, x_dev, y_train, y_dev):
 def model_testing_DT(x_train, x_dev, y_train, y_dev):
     model = DecisionTreeRegressor()
     param_dist = {
-        'criterion': ['mse', 'mae'], 
+        'criterion': ['squared_error', 'absolute_error'], 
         'splitter': ['best', 'random'],
-        'max_depth': np.arange(1,20), 
-        'min_samples_split': np.arange(2, 21), 
-        'max_samples_leaf': np.arange(1,20),
+        'max_depth': np.arange(1,21,10), 
+        'min_samples_split': np.arange(2, 22,10), 
     }
-    tuning = RandomizedSearchCV(model, param_dist, n_iter=50 , n_jobs=-1, random_state=42)
+    tuning = GridSearchCV(model, param_dist, n_jobs=-1, cv=2, verbose=2)
     tuning.fit(x_train, y_train)
     print(tuning.best_params_)
     preds = tuning.best_estimator_.predict(x_dev)
@@ -75,14 +74,13 @@ def model_testing_DT(x_train, x_dev, y_train, y_dev):
 def model_testing_RF(x_train, x_dev, y_train, y_dev):
     model = RandomForestRegressor()
     param_dist = {
-        'n_estimators': np.arange(10,200),
-        'criterion': ['mse', 'mae'],
-        'max_depth': np.arange(1,20), 
-        'min_samples_split': np.arange(2, 21), 
-        'max_samples_leaf': np.arange(1,20),
-        'max_features': ['auto', 'sqrt', 'log2', None],
+        'n_estimators': np.arange(10,210, 75),
+        'criterion': ['squared_error', 'absolute_error'],
+        'max_depth': np.arange(2,22, 20), 
+        'min_samples_split': np.arange(2, 22, 20), 
+        'max_features': ['sqrt', 'log2'],
     }
-    tuning = RandomizedSearchCV(model, param_dist, n_iter=50 , n_jobs=-1, random_state=42)
+    tuning = GridSearchCV(model, param_dist, n_jobs=-1, cv=2, verbose=2)
     tuning.fit(x_train, y_train)
     print(tuning.best_params_)
     preds = tuning.best_estimator_.predict(x_dev)
@@ -96,14 +94,13 @@ def model_testing_RF(x_train, x_dev, y_train, y_dev):
 def model_testing_GB(x_train, x_dev, y_train, y_dev):
     model = GradientBoostingRegressor()
     param_dist = {
-        'n_estimators': np.arange(10,200),
-        'learning_rate': np.arange(0.01, 0.5, 0.05),
-        'max_depth': np.arange(1,10), 
-        'subsample': np.arange(0.1,1.0,0.1),
-        'min_samples_split': np.arange(2, 21), 
-        'max_samples_leaf': np.arange(1,20),
+        'n_estimators': np.arange(10,210, 75),
+        'learning_rate': np.arange(0.1, 0.5, 0.25),
+        'max_depth': np.arange(1,11, 5), 
+        'subsample': np.arange(0.1,1.1,0.5),
+        'min_samples_split': np.arange(2, 21, 20), 
     }
-    tuning = RandomizedSearchCV(model, param_dist, n_iter=50 , n_jobs=-1, random_state=42)
+    tuning = GridSearchCV(model, param_dist, n_jobs=-1, cv=2, verbose=2)
     tuning.fit(x_train, y_train)
     print(tuning.best_params_)
     preds = tuning.best_estimator_.predict(x_dev)
