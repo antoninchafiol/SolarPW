@@ -19,8 +19,6 @@ def model_testing(X,y, mtype):
         res= model_testing_RF(x_train, x_dev, y_train, y_dev)
     elif mtype=='GB':
         res= model_testing_GB(x_train, x_dev, y_train, y_dev)
-    elif mtype=='NN':
-        res= model_testing_NN(x_train, x_dev, y_train, y_dev)
     return res
 
 def plain_testing(x_train, x_dev, y_train, y_dev, model):
@@ -110,8 +108,9 @@ def model_testing_GB(x_train, x_dev, y_train, y_dev):
         'MSE': mean_squared_error(preds, y_dev, squared=True),
         'RMSE': mean_squared_error(preds, y_dev, squared=False)
     }
-def model_testing_NN(x_train, x_dev, y_train, y_dev):
-    return 0
+
+
+
 
 
 
