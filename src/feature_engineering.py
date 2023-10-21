@@ -76,7 +76,26 @@ def sensor_for_module_temp(df):
     
     return res, target
 
+def lone_sensor_for_irradiation(df):
+    res = df.drop(columns=["DATE_TIME", "date", 'time', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE' ])
+    target = res.pop("IRRADIATION")
 
+    # Doing both a KMeans clustering horizontally & vertically
+    km = KMeans(n_clusters=3, max_iter=350, n_init=50)
+    # For vertical clustering, we're not selecting time_id as a parameter for the clustering
+    # res['Clustering'] = km.fit(res[['time_id']]).labels_
+
+    return res, target
+
+def lone_sensor_for_ambient_temp(df):
+    res = df.drop(columns=["DATE_TIME", "date", 'time', 'MODULE_TEMPERATURE', "IRRADIATION"])
+    target = res.pop("AMBIENT_TEMPERATURE")  
+    return res, target
+
+def lone_sensor_for_module_temp(df):
+    res = df.drop(columns=["DATE_TIME", "date", 'time', 'AMBIENT_TEMPERATURE', "IRRADIATION"])
+    target = res.pop("MODULE_TEMPERATURE")  
+    return res, target
 # For Generator datasets
 
 # WIP
