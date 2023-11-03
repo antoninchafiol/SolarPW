@@ -29,7 +29,7 @@ def normgb_opt(x_train, y_train):
     search = RandomizedSearchCV(
         GradientBoostingRegressor(), 
         param_dist,
-        n_iter=50000, 
+        n_iter=5000, 
         cv=2, 
         n_jobs=-1, 
         verbose=1
@@ -38,7 +38,7 @@ def normgb_opt(x_train, y_train):
 
     return search.best_params_, search.best_estimator_
 
-def lightgb_opt():
+def lightgb_opt(x_train, y_train):
     param_dist = {
         'n_estimators': np.arange(50, 200, 5),
         'max_depth': np.arange(2, 10, 1),
@@ -60,13 +60,13 @@ def lightgb_opt():
     return search.best_params_, search.best_estimator_
 
 
-from sklearn.model_selection import train_test_split
-from data_prep import *
-from feature_engineering import *
+# from sklearn.model_selection import train_test_split
+# from data_prep import *
+# from feature_engineering import *
 
-dfs = load_sensor("dataset/Plant_1_Weather_Sensor_Data.csv", save=False)
-irr_X, irr_y = sensor_for_irradiation(dfs[0])
+# dfs = load_sensor("dataset/Plant_1_Weather_Sensor_Data.csv", save=False)
+# irr_X, irr_y = sensor_for_irradiation(dfs[0])
 
-x_train, x_dev, y_train, y_dev = train_test_split(irr_X, irr_y, test_size=0.2, random_state=42)
-params, model = normgb_opt(x_train, y_train)
-print(params)
+# x_train, x_dev, y_train, y_dev = train_test_split(irr_X, irr_y, test_size=0.2, random_state=42)
+# params, model = normgb_opt(x_train, y_train)
+# print(params)
